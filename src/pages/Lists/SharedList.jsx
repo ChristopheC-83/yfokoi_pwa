@@ -9,12 +9,14 @@ import { useUserStore } from "@/store/useUserStore";
 import React, { useEffect, useState } from "react";
 
 import Item from "./components/Item";
+import { useFriendStore } from "@/store/useFriendsStore";
 
 export default function SharedList() {
-  const [friends, setFriends] = useState([]);
+  const friends = useFriendStore((state) => state.friends);
+  const fetchFriends = useFriendStore((state) => state.fetchFriends);
+  const isLoaded = useFriendStore((state) => state.isLoaded); // Ajoute ça !
 
   const user = useUserStore((state) => state.user);
-
   const isHydrated = useUserStore((state) => state.isHydrated);
 
   const [sharedItems, setSharedItems] = useState([
@@ -55,7 +57,7 @@ export default function SharedList() {
 
       done: false,
 
-      authorId: "3d610204-5b1b-43ed-9502-3b20710e5908",
+      authorId: "8ba26f40-b896-4c89-9843-6237382025c5",
     },
 
     {
@@ -70,12 +72,8 @@ export default function SharedList() {
   ]);
 
   useEffect(() => {
-    (async () => {
-      const myFriends = await getFriendsMap();
-
-      setFriends(myFriends);
-    })();
-  }, []);
+    fetchFriends();
+  }, [fetchFriends]);
 
   function toggleDone(id) {
     setSharedItems((prev) =>
@@ -85,23 +83,29 @@ export default function SharedList() {
     );
   }
 
+  function deleteItem(id) {
+    setSharedItems((prev) => prev.filter((item) => item.id !== id));
+  }
+
   if (!isHydrated) return <Loader />;
 
   return (
     <div className="flex flex-col w-full p-2 relative">
       <Title text="Liste Partagée" />
-
-      <section className="w-full flex flex-col">
+      <section className="w-full flex flex-col mt-3">
         {sharedItems.map((item) => {
-          const author = friends[item.authorId]; // Accès ultra rapide
+          const author = friends[item.authorId];
 
           return (
             <Item
               key={item.id}
               item={item}
-              authorName={author?.name}
+              // Si l'auteur n'existe pas en base, on met "Inconnu" au lieu de vide
+              authorName={author?.name || "Anonyme"}
+              isMine={item.authorId === user?.id}
               userName={user?.name}
-              onClick={() => toggleDone(item.id)}
+              onClickToggle={() => toggleDone(item.id)}
+              onClickDelete={() => deleteItem(item.id)}
             />
           );
         })}

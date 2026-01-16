@@ -13,8 +13,8 @@ export default function Layout() {
   if (!isHydrated) return <Loader />;
 
   return (
-    <div className="min-h-svh bg-slate-600 text-amber-100 flex flex-col min-w-svw items-center relative pb-20">
-      <main className="grow flex bg-slate-800 w-full max-w-md border-2 border-amber-100 overflow-x-hidden">
+    <div className="min-h-svh bg-slate-600 text-amber-100 flex flex-col min-w-svw items-center relative pb-16">
+      <main className="grow flex bg-slate-800 w-full max-w-md  overflow-x-hidden">
         <Toaster position="top-center" richColors expand={true} />
         <Outlet />
       </main>
