@@ -56,6 +56,10 @@ export const usePersonalListStore = create(
         set((state) => ({
           items: state.items.filter((i) => i.id !== id),
         })),
+      clearCompleted: (listId) =>
+        set((state) => ({
+          items: state.items.filter((i) => !(i.listId === listId && i.done)),
+        })),
     }),
     { name: "yfokoi-personal-storage" }
   )

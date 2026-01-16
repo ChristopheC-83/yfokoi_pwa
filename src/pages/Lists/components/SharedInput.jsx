@@ -20,7 +20,7 @@ export default function SharedInput({ user }) {
   return (
     <form
       className="w-full max-w-96 mx-auto bg-gray-50 border border-gray-300
-     text-gray-900 text-sm rounded-lg flex justify-between sticky top-2 my-2 shadow-2xl"
+     text-gray-900 text-sm rounded-lg flex justify-between sticky top-2 my-2 shadow-2xl  "
       onSubmit={handleAddItem}
     >
       <input

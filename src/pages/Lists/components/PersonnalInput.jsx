@@ -1,5 +1,4 @@
 import { usePersonalListStore } from "@/store/usePersonalListStore";
-import { useSharedItemsStore } from "@/store/useSharedItemsStore";
 import React, { useRef, useState } from "react";
 
 export default function PersonnalInput({ user }) {
