@@ -14,7 +14,9 @@ export default function Layout() {
 
   return (
     <div className="min-h-svh bg-slate-600 text-amber-100 flex flex-col min-w-svw items-center relative pb-16">
-      <main className="grow flex bg-slate-800 w-full max-w-md  overflow-x-hidden">
+      <main className="grow flex bg-slate-800 w-full max-w-md 
+      
+       ">
         <Toaster position="top-center" richColors expand={true} />
         <Outlet />
       </main>

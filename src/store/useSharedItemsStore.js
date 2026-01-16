@@ -28,7 +28,7 @@ export const useSharedItemsStore = create(
           .select("*")
           .order("created_at", { ascending: false });
 
-        console.log("data : ", data);
+        // console.log("data : ", data);
 
         if (!error) {
           set({ items: data, lastFetched: now });
@@ -75,6 +75,52 @@ export const useSharedItemsStore = create(
           .delete()
           .eq("id", id);
         if (error) set({ items: previousItems });
+      },
+
+      //  ajouter (optimiste)
+      addItem: async (text, author_id) => {
+
+        // 1. Sécurité : on ne fait rien si l'user n'est pas là
+        if (!author_id) {
+          console.error("Ajout impossible : pas d'utilisateur connecté");
+          return;
+        }
+
+        const previousItems = get().items;
+
+        // 2. Création de l'item temporaire pour l'UI (Optimiste)
+        const newItem = {
+          id: crypto.randomUUID(), // ID temporaire
+          item: text,
+          done: false,
+          author_id: author_id,
+          created_at: new Date().toISOString(),
+        };
+
+        // On l'ajoute direct en haut de la liste
+        set({ items: [newItem, ...previousItems] });
+
+        // 3. Envoi à Supabase
+        const { data, error } = await supabase
+          .from("shared_items")
+          .insert([
+            {
+              item: text,
+              author_id: author_id,
+            },
+          ])
+          .select(); // On demande le vrai item créé (avec son vrai ID)
+
+        if (error) {
+          console.error("Erreur insertion:", error.message);
+          set({ items: previousItems }); // Rollback si ça foire
+        } else if (data) {
+          // Optionnel : On remplace l'item temporaire par le vrai item du serveur
+          // pour avoir le bon ID et le bon timestamp
+          set({
+            items: get().items.map((i) => (i.id === newItem.id ? data[0] : i)),
+          });
+        }
       },
 
       // Realtime : On écoute les changements des autres

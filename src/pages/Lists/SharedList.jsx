@@ -11,6 +11,7 @@ import React, { useEffect, useState } from "react";
 import Item from "./components/Item";
 import { useFriendStore } from "@/store/useFriendsStore";
 import { useSharedItemsStore } from "@/store/useSharedItemsStore";
+import SharedInput from "./components/SharedInput";
 
 export default function SharedList() {
   // 1. Branchement aux stores (Selecteurs précis pour la performance)
@@ -80,8 +81,8 @@ export default function SharedList() {
     // On charge les données initiales
     fetchFriends();
     fetchItems();
-    console.log("fetchFriends : ", friends);
-    console.log("fetchItems : ", items)
+    // console.log("fetchFriends : ", friends);
+    // console.log("fetchItems : ", items)
 
     // On active l'écoute en temps réel
     const unsubscribe = subscribe();
@@ -105,8 +106,9 @@ export default function SharedList() {
   if (!isHydrated) return <Loader />;
 
   return (
-    <div className="flex flex-col w-full p-2 relative">
+    <div className="flex flex-col w-full p-2 ">
       <Title text="Liste Partagée" />
+      <SharedInput user={user} />
       <section className="w-full flex flex-col mt-3">
         {items.map((item) => {
           const author = friends[item.author_id];
