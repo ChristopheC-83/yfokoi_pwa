@@ -13,7 +13,6 @@ export default function Login() {
 
   async function handleLogin(e) {
     e.preventDefault();
-    console.log("login", email);
     const result = await login(email);
     if (!result.success) {
       toast.error(result.error);

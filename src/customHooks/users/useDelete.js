@@ -1,4 +1,4 @@
-import { useState } from "react"; // Pour gérer le loading localement
+import { useState } from "react"; 
 import { supabase } from "../../supabaseClient";
 import { useUserStore } from "../../store/useUserStore";
 

@@ -27,7 +27,6 @@ export default function SelectList() {
         <option value="ADD_NEW_LIST">➕ Créer une liste...</option>
       </select>
 
-      {/* Bouton pour éditer la liste ACTUELLE */}
       <button
         onClick={() => setIsEditModalOpen(true)}
         className="p-3 bg-slate-700 rounded-xl text-amber-400 active:scale-90 transition-transform"
@@ -35,7 +34,6 @@ export default function SelectList() {
         ⚙️
       </button>
 
-      {/* Tes modales */}
       {isAddModalOpen && (
         <AddListModal onClose={() => setIsAddModalOpen(false)} />
       )}

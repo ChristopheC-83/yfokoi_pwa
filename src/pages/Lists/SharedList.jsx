@@ -62,7 +62,6 @@ export default function SharedList() {
             <Item
               key={item.id}
               item={item}
-              // Si l'auteur n'existe pas en base, on met "Inconnu" au lieu de vide
               authorName={author?.name || "Anonyme"}
               isMine={item.author_id === user?.id}
               userName={user?.name}

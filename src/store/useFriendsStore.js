@@ -20,7 +20,6 @@ export const useFriendStore = create(
 
         // Si on n'est pas en force, qu'on a des données et que le TTL est encore bon : on skip
         if (!force && lastFetched && now - lastFetched < TTL_DURATION) {
-          console.log("Amis chargés depuis le cache (TTL OK) 🛡️");
           return;
         }
 
@@ -42,7 +41,6 @@ export const useFriendStore = create(
             lastFetched: now,
             isLoading: false,
           });
-          console.log("Amis rafraîchis depuis Supabase 🚀");
         } catch (err) {
           set({ isLoading: false });
           console.error(err.message);

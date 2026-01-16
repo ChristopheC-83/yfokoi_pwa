@@ -14,7 +14,6 @@ export default function Avatar() {
   const navigate = useNavigate();
   const logout = useUserStore((state) => state.logout);
 
-  // console.log(user);
   function handleLogout() {
     logout();
     navigate("/", { replace: true });

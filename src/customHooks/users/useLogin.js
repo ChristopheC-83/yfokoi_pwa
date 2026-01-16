@@ -1,4 +1,4 @@
-import { supabase } from "@/supabaseClient"; // On utilise l'alias @/ maintenant !
+import { supabase } from "@/supabaseClient"; 
 import { useUserStore } from "@/store/useUserStore";
 
 export default function useLogin() {

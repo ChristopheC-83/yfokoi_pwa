@@ -11,12 +11,9 @@ export default function Item({
     <div className="w-full max-w-96 mx-auto flex justify-between items-center p-1 border-l border-b border-amber-100 text-amber-50 rounded-lg bg-slate-700 mb-3 shadow-2xl">
       <p className="grow cursor-pointer" onClick={onClickToggle}>
         <span className="me-2">{item.done ? "✅" : "🟩"}</span>
-        {/* Correction de ta logique de ligne barrée au passage ;) */}
         <span className={item.done ? "line-through text-slate-400" : ""}>
           {item.item}
         </span>
-
-        {/* On n'affiche le nom que si ce n'est PAS à moi ET que le nom existe */}
         {!isMine && authorName && (
           <span className="text-xs text-slate-400 ms-2 italic">
             de {authorName}

@@ -28,7 +28,6 @@ export const useSharedItemsStore = create(
           .select("*")
           .order("created_at", { ascending: false });
 
-        // console.log("data : ", data);
 
         if (!error) {
           set({ items: data, lastFetched: now });
@@ -79,7 +78,6 @@ export const useSharedItemsStore = create(
 
       //  ajouter (optimiste)
       addItem: async (text, author_id) => {
-
         // 1. Sécurité : on ne fait rien si l'user n'est pas là
         if (!author_id) {
           console.error("Ajout impossible : pas d'utilisateur connecté");
@@ -122,6 +120,7 @@ export const useSharedItemsStore = create(
           });
         }
       },
+      
 
       // Realtime : On écoute les changements des autres
       subscribe: () => {
