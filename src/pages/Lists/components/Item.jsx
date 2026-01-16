@@ -8,7 +8,7 @@ export default function Item({
   isMine,
 }) {
   return (
-    <div className="w-full max-w-96 mx-auto flex justify-between items-center p-1 border-l-2 border-b-2 border-amber-100 text-amber-50 rounded-lg bg-slate-700 mb-3">
+    <div className="w-full max-w-96 mx-auto flex justify-between items-center p-1 border-l-2 border-b-2 border-amber-100 text-amber-50 rounded-lg bg-slate-700 mb-3 shadow-2xl">
       <p className="grow cursor-pointer" onClick={onClickToggle}>
         <span className="me-2">{item.done ? "✅" : "🟩"}</span>
         {/* Correction de ta logique de ligne barrée au passage ;) */}
