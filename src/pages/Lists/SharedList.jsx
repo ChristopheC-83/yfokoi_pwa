@@ -10,82 +10,97 @@ import React, { useEffect, useState } from "react";
 
 import Item from "./components/Item";
 import { useFriendStore } from "@/store/useFriendsStore";
+import { useSharedItemsStore } from "@/store/useSharedItemsStore";
 
 export default function SharedList() {
-  const friends = useFriendStore((state) => state.friends);
-  const fetchFriends = useFriendStore((state) => state.fetchFriends);
-  const isLoaded = useFriendStore((state) => state.isLoaded); // Ajoute ça !
-
+  // 1. Branchement aux stores (Selecteurs précis pour la performance)
   const user = useUserStore((state) => state.user);
   const isHydrated = useUserStore((state) => state.isHydrated);
 
-  const [sharedItems, setSharedItems] = useState([
-    {
-      id: 1,
+  const friends = useFriendStore((state) => state.friends);
+  const fetchFriends = useFriendStore((state) => state.fetchFriends);
 
-      item: "faire du velo",
+  const { items, fetchItems, toggleItem, deleteItem, subscribe } =
+    useSharedItemsStore();
 
-      done: false,
+  // const [sharedItems, setSharedItems] = useState([
+  //   {
+  //     id: 1,
 
-      authorId: "3d610204-5b1b-43ed-9502-3b20710e5908",
-    },
+  //     item: "faire du velo",
 
-    {
-      id: 2,
+  //     done: false,
 
-      item: "faire de la CAP",
+  //     authorId: "3d610204-5b1b-43ed-9502-3b20710e5908",
+  //   },
 
-      done: false,
+  //   {
+  //     id: 2,
 
-      authorId: "b2750b20-e756-4af4-acc4-ff365ff6b26d",
-    },
+  //     item: "faire de la CAP",
 
-    {
-      id: 3,
+  //     done: false,
 
-      item: "faire le ménage",
+  //     authorId: "b2750b20-e756-4af4-acc4-ff365ff6b26d",
+  //   },
 
-      done: true,
+  //   {
+  //     id: 3,
 
-      authorId: "3d610204-5b1b-43ed-9502-3b20710e5908",
-    },
+  //     item: "faire le ménage",
 
-    {
-      id: 4,
+  //     done: true,
 
-      item: "faire les courses",
+  //     authorId: "3d610204-5b1b-43ed-9502-3b20710e5908",
+  //   },
 
-      done: false,
+  //   {
+  //     id: 4,
 
-      authorId: "8ba26f40-b896-4c89-9843-6237382025c5",
-    },
+  //     item: "faire les courses",
 
-    {
-      id: 5,
+  //     done: false,
 
-      item: "faire une PWA",
+  //     authorId: "8ba26f40-b896-4c89-9843-6237382025c5",
+  //   },
 
-      done: true,
+  //   {
+  //     id: 5,
 
-      authorId: "b2750b20-e756-4af4-acc4-ff365ff6b26d",
-    },
-  ]);
+  //     item: "faire une PWA",
 
+  //     done: true,
+
+  //     authorId: "b2750b20-e756-4af4-acc4-ff365ff6b26d",
+  //   },
+  // ]);
+
+  // 2. Gestion du cycle de vie (Fetch + Realtime)
   useEffect(() => {
+    // On charge les données initiales
     fetchFriends();
-  }, [fetchFriends]);
+    fetchItems();
+    console.log("fetchFriends : ", friends);
+    console.log("fetchItems : ", items)
 
-  function toggleDone(id) {
-    setSharedItems((prev) =>
-      prev.map((item) =>
-        item.id === id ? { ...item, done: !item.done } : item
-      )
-    );
-  }
+    // On active l'écoute en temps réel
+    const unsubscribe = subscribe();
 
-  function deleteItem(id) {
-    setSharedItems((prev) => prev.filter((item) => item.id !== id));
-  }
+    // Nettoyage : on coupe la connexion quand on quitte le composant
+    return () => unsubscribe();
+  }, [fetchFriends, fetchItems, subscribe]);
+
+  // function toggleDone(id) {
+  //   setSharedItems((prev) =>
+  //     prev.map((item) =>
+  //       item.id === id ? { ...item, done: !item.done } : item
+  //     )
+  //   );
+  // }
+
+  // function deleteItem(id) {
+  //   setSharedItems((prev) => prev.filter((item) => item.id !== id));
+  // }
 
   if (!isHydrated) return <Loader />;
 
@@ -93,8 +108,8 @@ export default function SharedList() {
     <div className="flex flex-col w-full p-2 relative">
       <Title text="Liste Partagée" />
       <section className="w-full flex flex-col mt-3">
-        {sharedItems.map((item) => {
-          const author = friends[item.authorId];
+        {items.map((item) => {
+          const author = friends[item.author_id];
 
           return (
             <Item
@@ -102,9 +117,9 @@ export default function SharedList() {
               item={item}
               // Si l'auteur n'existe pas en base, on met "Inconnu" au lieu de vide
               authorName={author?.name || "Anonyme"}
-              isMine={item.authorId === user?.id}
+              isMine={item.author_id === user?.id}
               userName={user?.name}
-              onClickToggle={() => toggleDone(item.id)}
+              onClickToggle={() => toggleItem(item.id)}
               onClickDelete={() => deleteItem(item.id)}
             />
           );
