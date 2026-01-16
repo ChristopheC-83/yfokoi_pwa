@@ -1,0 +1,17 @@
+* {
+  box-sizing: border-box;
+}
+
+.boxShadowTop {
+  box-shadow: 0px -6px 8px 1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 0px -6px 8px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 0px -6px 8px 1px rgba(0, 0, 0, 0.5);
+}
+
+.boxShadowAvatar {
+  -webkit-backdrop-filter: s;
+          backdrop-filter: s;
+  box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+  -webkit-box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+  -moz-box-shadow: 3px 3px 8px 1px rgba(0, 0, 0, 0.5);
+}/*# sourceMappingURL=global.css.map */
